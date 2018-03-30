@@ -1,7 +1,7 @@
 let listitems = ['Grenache', 'Trousseau', 'Carignane'];
 
-let form = document.getElementById('add');
-form.addEventListener('submit', addListItem);
+// let form = document.getElementById('add');
+// form.addEventListener('submit', addListItem);
 
 window.addEventListener('load', displayWine);
 
