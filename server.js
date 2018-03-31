@@ -1,12 +1,12 @@
 'use strict'
 
-let listitems = {'data': ['Grenache', 'Trousseau', 'Carignane']};
-
-var express = require('express');
-var app = express();
-var cors = require('cors');
-var bodyParser = require('body-parser');
-var path = __dirname + "/app/static/";
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = __dirname + "/app/static/";
+const MongoClient = require('mongodb').MongoClient;
+var db = require('./config/db');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,20 +18,15 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/app/test.html');
 });
 
-app.get('/test', function(req, res) {
-	res.json(listitems)
-});
-
-app.post('/update', function(req, res) {
-	var item = req.body.item;
-	listitems.data.push(item);
-	res.json({ 'data': 'success' });
-});
 
 app.use('/', express.static(path));
 
-// app.use('/api', router);
+MongoClient.connect(db.url, (err, database) => {
+	if (err) return console.log(err)
+	db = database.db('wine')
+	require('./app/routes')(app, db);
 
-app.listen(3000, function() {
+	app.listen(3000, () => {
 	console.log('listening on port 3000!');
+	});
 });

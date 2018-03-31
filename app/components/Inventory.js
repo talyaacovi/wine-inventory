@@ -14,7 +14,7 @@ export class Inventory extends Component {
 	}
 
 	fetchInventory() {
-		fetch('http://localhost:3000/test')
+		fetch('http://localhost:3000/get-inventory')
 		.then((response) => response.json())
         .then((data) => {
         	this.setState({ wine: data.data })

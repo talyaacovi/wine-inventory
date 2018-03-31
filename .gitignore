@@ -4,3 +4,4 @@ webpack.config.js
 .babelrc
 env
 .DS_Store
+config
