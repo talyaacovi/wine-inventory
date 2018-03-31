@@ -1,18 +1,53 @@
 import React, { Component } from 'react';
 import { Form } from './Form';
 
-let listitems = ['Grenache', 'Trousseau', 'Carignane'];
-
 export class Inventory extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { wine: listitems };
+		this.state = { wine: [] };
+		this.fetchInventory = this.fetchInventory.bind(this);
+		this.updateInventory = this.updateInventory.bind(this);
+	}
+
+	componentWillMount() {
+		this.fetchInventory();
+	}
+
+	fetchInventory() {
+		fetch('http://localhost:3000/test')
+		.then((response) => response.json())
+        .then((data) => {
+        	this.setState({ wine: data.data })
+        })
+	}
+
+	updateInventory(item) {
+		// let payload = new FormData();
+		// payload.append('item', item);
+
+		var headers = new Headers();
+		headers.append('Accept', 'application/json'); // This one is enough for GET requests
+		headers.append('Content-Type', 'application/json');
+
+		fetch('http://localhost:3000/update', {
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify({
+				item: item
+			}),
+			credentials: 'same-origin'
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log('success!');
+		});
 	}
 
 	updateList(item) {
 		let currItems = this.state.wine;
 		currItems.push(item);
 		this.setState({ wine: currItems });
+		this.updateInventory(item);
 	}
 
 	render() {
