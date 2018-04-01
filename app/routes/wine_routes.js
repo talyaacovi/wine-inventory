@@ -1,10 +1,22 @@
-let listitems = {'data': ['Grenache', 'Trousseau', 'Carignane']};
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(app, db) {
-	const collection = 
-	app.post('/wines', (req, res) => {
-		const wine = { name: req.body.body, variety: req.body.title };
-		db.collection('wine').insert(note, (err, result) => {
+	app.get('/wines/:id', (req, res) => {
+		const id = req.params.id;
+		const details = { '_id': new ObjectID(id) };
+		db.collection('wine').findOne(details, (err, item) => {
+			if (err) {
+				res.send({ 'error': 'An error has occurred' });
+			} else {
+				res.send(item);
+			}
+		});
+	});
+	// const collection = 
+	app.post('/add-wine', (req, res) => {
+		// const wine = { name: req.body.name, variety: req.body.variety };
+		const wine = { name: req.body.name };
+		db.collection('wine').insert(wine, (err, result) => {
 			if (err) {
 				res.send({ 'error': 'An error has occurred' });
 			} else {
@@ -12,13 +24,20 @@ module.exports = function(app, db) {
 			}
 		});
 	});
+
 	app.post('/update', function(req, res) {
 		var item = req.body.item;
 		listitems.data.push(item);
 		res.json({ 'data': 'success' });
 	});
-	app.get('/get-inventory', function(req, res) {
-		res.json(listitems)
-	});
-};
 
+	app.get('/get-inventory', (req, res) => {
+		db.collection('wine').find({}).toArray(function(err, result) {
+			if (err) {
+				res.send({ 'error': 'An error has occurred' });
+			} else {
+				res.json({ 'data': result });
+			}
+		});
+	});
+}

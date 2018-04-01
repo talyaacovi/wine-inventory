@@ -17,7 +17,8 @@ export class Inventory extends Component {
 		fetch('http://localhost:3000/get-inventory')
 		.then((response) => response.json())
         .then((data) => {
-        	this.setState({ wine: data.data })
+        	let wines = data.data.map(item => item.name);
+        	this.setState({ wine: wines })
         })
 	}
 
@@ -29,11 +30,11 @@ export class Inventory extends Component {
 		headers.append('Accept', 'application/json'); // This one is enough for GET requests
 		headers.append('Content-Type', 'application/json');
 
-		fetch('http://localhost:3000/update', {
+		fetch('http://localhost:3000/add-wine', {
 			method: 'POST',
 			headers: headers,
 			body: JSON.stringify({
-				item: item
+				name: item
 			}),
 			credentials: 'same-origin'
 		})
