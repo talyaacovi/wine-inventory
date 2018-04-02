@@ -4,7 +4,7 @@ import { Form } from './Form';
 export class Inventory extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { wine: [] };
+		this.state = { wine: [], btn: 'Add To List' };
 		this.fetchInventory = this.fetchInventory.bind(this);
 		this.updateInventory = this.updateInventory.bind(this);
 	}
@@ -23,11 +23,8 @@ export class Inventory extends Component {
 	}
 
 	updateInventory(item) {
-		// let payload = new FormData();
-		// payload.append('item', item);
-
 		var headers = new Headers();
-		headers.append('Accept', 'application/json'); // This one is enough for GET requests
+		headers.append('Accept', 'application/json');
 		headers.append('Content-Type', 'application/json');
 
 		fetch('http://localhost:3000/add-wine', {
@@ -55,11 +52,12 @@ export class Inventory extends Component {
 		let wine = this.state.wine.map((item,i) => <li key={i}>{item}</li>)
 		return (
 				<div>
+					<h1>Tal's Wine</h1>
 					<h2>This will be a list of wine</h2>
 					{wine}
 					<div>
 						<p>Add New Wine To List:</p>
-						<Form onChange={this.updateList.bind(this)}/>
+						<Form onChange={this.updateList.bind(this)} btn={this.state.btn}/>
 					</div>
 				</div>
 			)

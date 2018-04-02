@@ -1,4 +1,5 @@
 var ObjectID = require('mongodb').ObjectID;
+var path = require('path');
 
 module.exports = function(app, db) {
 	app.get('/wines/:id', (req, res) => {
@@ -12,9 +13,8 @@ module.exports = function(app, db) {
 			}
 		});
 	});
-	// const collection = 
+
 	app.post('/add-wine', (req, res) => {
-		// const wine = { name: req.body.name, variety: req.body.variety };
 		const wine = { name: req.body.name };
 		db.collection('wine').insert(wine, (err, result) => {
 			if (err) {
@@ -40,4 +40,5 @@ module.exports = function(app, db) {
 			}
 		});
 	});
+
 }

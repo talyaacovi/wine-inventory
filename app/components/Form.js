@@ -23,7 +23,7 @@ export class Form extends Component {
 				<div>
 					<form onSubmit={this.handleSubmit.bind(this)}>
 						<input required onChange={this.handleChange.bind(this)} value={this.state.input}></input>
-						<input type='submit' value='Add To List'></input>
+						<input type='submit' value={this.props.btn}></input>
 					</form>
 				</div>
 			)

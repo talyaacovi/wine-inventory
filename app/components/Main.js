@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Inventory } from './Inventory';
+import { Home } from './Home';
+import { Test } from './Test';
+import { Switch, Route } from 'react-router-dom';
 
 class Main extends Component {
 	constructor(props) {
@@ -8,10 +11,10 @@ class Main extends Component {
 
 	render() {
 		return (
-			<div>
-				<h1>Tal's Wine</h1>
-				<Inventory />
-			</div>
+			<Switch>
+				<Route exact path='/' component={Home}/>
+				<Route path='/wine' component={Inventory}/>
+			</Switch>
 			)
 	}
 }
