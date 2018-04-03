@@ -4,15 +4,33 @@ import { Link } from 'react-router-dom';
 export class Signup extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { username: '', password: '' };
+		this.state = { email: '', password: '' };
 	}
 
 	handleChange(evt) {
-		console.log(evt.target.value);
+		this.setState({ email: this.email.value, password: this.password.value });
 	}
 
 	handleSubmit(evt) {
-		console.log(evt);
+		evt.preventDefault();
+		
+		var headers = new Headers();
+		headers.append('Accept', 'application/json');
+		headers.append('Content-Type', 'application/json');
+
+		fetch('http://localhost:3000/add-user', {
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify({
+				email: this.state.email,
+				password: this.state.password
+			}),
+			credentials: 'same-origin'
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log(data);
+		});
 	}
 
 	render() {
@@ -24,7 +42,7 @@ export class Signup extends Component {
 							<input type='email' ref={input => this.email = input} onChange={this.handleChange.bind(this)} value={this.state.email}/>
 						</label>
 						<label>Password: 
-							<input type='password' onChange={this.handleChange.bind(this)} value={this.state.password}/>
+							<input type='password' ref={input => this.password = input} onChange={this.handleChange.bind(this)} value={this.state.password}/>
 						</label>
 						<input type='submit' value='Submit'/>
 					</form>
