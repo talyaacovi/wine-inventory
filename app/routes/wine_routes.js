@@ -1,5 +1,6 @@
-var ObjectID = require('mongodb').ObjectID;
+var ObjectId = require('mongodb').ObjectID;
 var path = require('path');
+var User = require('../schema.js');
 
 module.exports = function(app, db) {
 	app.get('/wines/:id', (req, res) => {
@@ -21,6 +22,26 @@ module.exports = function(app, db) {
 				res.send({ 'error': 'An error has occurred' });
 			} else {
 				res.send(result.ops[0]);
+			}
+		});
+	});
+
+
+	app.post('/add-user', (req, res) => {
+		const email = { email: req.body.email };
+		const password = { password: req.body.password };
+
+		let newUser = new User({
+			_id: new mongoose.Types.ObjectId(),
+			email: email,
+			password: password
+		});
+
+		newUser.save((err, result) => {
+			if (err) {
+				res.send({ 'error': 'An error has occurred' });
+			} else {
+				console.log('User successfully saved!');
 			}
 		});
 	});
