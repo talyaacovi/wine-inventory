@@ -53,7 +53,6 @@ export class Inventory extends Component {
 		return (
 				<div>
 					<h1>Tal's Wine</h1>
-					<h2>This will be a list of wine</h2>
 					{wine}
 					<div>
 						<p>Add New Wine To List:</p>

@@ -35,7 +35,6 @@ app.get('/app/build*', (req, res) => {
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'app/index.html'));
-	console.log(path.join(__dirname, 'app/index.html'));
 });
 
 

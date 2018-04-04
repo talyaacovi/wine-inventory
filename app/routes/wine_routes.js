@@ -29,22 +29,35 @@ module.exports = function(app, db) {
 
 
 	app.post('/add-user', (req, res) => {
-		const email = { email: req.body.email };
-		const password = { password: req.body.password };
+		let email = { email: req.body.email };
+		let password = { password: req.body.password };
 
 		let newUser = new User(req.body);
 
-		// let newUser = new User({
-		// 	_id: new mongoose.Types.ObjectId(),
-		// 	email: email,
-		// 	password: password
-		// });
-
 		newUser.save((err, result) => {
 			if (err) {
-				res.send({ 'error': 'An error has occurred' });
+				res.send({ 'error': 'An error has occurred.' });
 			} else {
 				res.send({ 'msg': 'User successfully saved!' });
+			}
+		});
+	});
+
+	app.post('/login', (req, res) => {
+		let email = req.body.email;
+		let password = req.body.password;
+
+		User.findOne({ email: email }, 'password', (err, response) => {
+			if (err || response === null) {
+				res.send({ 'error': 'This email address does not have an account.' });
+			} else {
+				db_password = response.password;
+				if (db_password === password) {
+					res.send({ 'msg': 'Password correct!'});
+				} else {
+					res.send({ 'msg': 'Incorrect password!'});
+				}
+
 			}
 		});
 	});
